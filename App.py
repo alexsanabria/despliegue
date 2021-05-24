@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, flash
 from joblib.numpy_pickle import load
 from flaskext.mysql import MySQL
 from joblib import dump, load
@@ -11,6 +11,9 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASS'] = ''
 mysql=MySQL(app)
 
+# Sesion 
+app.secret_key='mysecretkey'
+
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -20,14 +23,12 @@ def predecir():
     if request.method=='POST':
         Valores=[[float(request.form['val1']), float(request.form['val2']),float(request.form['val3']),float(request.form['val4']),float(request.form['val5']),
         float(request.form['val6']),float(request.form['val7']),float(request.form['val8']),float(request.form['val9']), float(request.form['val10']), float(request.form['val11'])]]
-        #suma=Valores[0] + Valores[1]
-
-
-    # json=request.get_json(force=True)
-    # Valores=json['Valores']
+        
         clf=load('models/Casif_vinos_Binario1.pkl')
         prediccion=clf.predict(Valores)
-        return "prediccion\n"+str(prediccion[0])+"\n"
+        flash("Prediccion = "+str(prediccion[0]))
+        return redirect(url_for('index'))
+        #return "prediccion\n"+str(prediccion)+"\n"
 
 
 if __name__=='__main__':
