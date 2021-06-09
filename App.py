@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from joblib.numpy_pickle import load
-from flaskext.mysql import MySQL
+from  flaskext.mysql import MySQL
 from joblib import dump, load
+from sklearn.decomposition import NMF
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 app=Flask(__name__)
@@ -21,14 +23,15 @@ def index():
 @app.route('/predecir', methods=["POST"])
 def predecir():
     if request.method=='POST':
-        Valores=[[float(request.form['val1']), float(request.form['val2']),float(request.form['val3']),float(request.form['val4']),float(request.form['val5']),
-        float(request.form['val6']),float(request.form['val7']),float(request.form['val8']),float(request.form['val9']), float(request.form['val10']), float(request.form['val11'])]]
-        
-        clf=load('models/Casif_vinos_Binario1.pkl')
-        prediccion=clf.predict(Valores)
-        flash("Prediccion = "+str(prediccion[0]))
+        TestTweet= [request.form['TestTweet']]
+        nb=load('models/NaiveBayes.pkl')
+        vec=load('models/tfidf_vect.pkl')
+        valorTrans=vec.transform(TestTweet)
+        prediccion=nb.predict(valorTrans)
+      
+        flash([str(TestTweet[0]), str(prediccion[0])])
         return redirect(url_for('index'))
-        #return "prediccion\n"+str(prediccion)+"\n"
+       
 
 
 if __name__=='__main__':

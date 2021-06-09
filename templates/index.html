@@ -1,44 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ingreso datos</title>
-</head>
-<body>
 
-    {% with messages = get_flashed_messages()%}
-    {%if messages%}
-        {%for mesage in messages%}
-        <p>{{mesage}}</p>
-        {%endfor%}      
-    {%endif%}
-    {%endwith%}
+{%extends 'layout.html' %}
 
-    <form action="/predecir" method="POST">
-        <input type="text" name="val1", placeholder="Fixed acidity"><br>
-        <input type="text" name="val2", placeholder="Volatile acidity"><br>
-        <input type="text" name="val3", placeholder="Citric acid"><br>
-        <input type="text" name="val4", placeholder="Residual sugar"><br>
-        <input type="text" name="val5", placeholder="Chlorides"><br>
-        <input type="text" name="val6", placeholder="Free sulfur dioxide"><br>
-        <input type="text" name="val7", placeholder="Total sulfur dioxide"><br>
-        <input type="text" name="val8", placeholder="Density"><br>
-        <input type="text" name="val9", placeholder="pH"><br>
-        <input type="text" name="val10", placeholder="Sulphates"><br>
-        <input type="text" name="val11", placeholder="Alcohol"><br>
-        
-        <button type="submit">Enviar</button>
+{%block body%}
 
-        {% with messages = get_flashed_messages()%}
-            {%if messages%}
-                {%for mesage in messages%}
-                    <p>{{mesage}}</p>
-                {%endfor%}      
-            {%endif%}
-        {%endwith%}
+<div class="row">
+    <h3>Predicción por Naive Bayes</h3>
+    
 
-    </form>
-</body>
-</html>
+    <div class="col-md-4">
+        <div class="card car-body"><br>
+            {% with messages = get_flashed_messages()%}
+                {%if messages%}
+                    {%for mesage in messages%}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            El mensaje: <b> {{mesage[0]}} </b> <br> Se predice como: <b> {{mesage[1]}} </b>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>    
+                    {%endfor%}      
+                {%endif%}
+            {%endwith%}
+
+            <form action="/predecir" method="POST"><br>        
+                <textarea type="text"  id="msgBox" name="TestTweet" placeholder="Mensaje" rows="4" cols="30"></textarea> 
+                <br>
+                <button type="submit" onclick="enviarTexto()" class="btn btn-success">Enviar</button>
+                
+            </form>
+            <label id="showMsg"></label>
+        </div>
+    </div>
+</div>
+
+    
+{%endblock%}
