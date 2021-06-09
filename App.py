@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from joblib.numpy_pickle import load
-from  flaskext.mysql import MySQL
 from joblib import dump, load
 from sklearn.decomposition import NMF
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -11,7 +10,6 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_DB'] = 'Flask_Deploy'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASS'] = ''
-mysql=MySQL(app)
 
 # Sesion 
 app.secret_key='mysecretkey'
